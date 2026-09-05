@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>宜蘭青年資源地圖 Yilan Resource Atlas</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <div class="title-block">
+      <h1>宜蘭青年資源地圖</h1>
+      <p class="subtitle">Yilan Resource Atlas — 公開資料驅動的地方教育、文化與青年參與資源盤點</p>
+    </div>
+    <nav class="header-nav">
+      <a href="#map">地圖</a>
+      <a href="#compare">鄉鎮比較</a>
+      <a href="#about">方法與限制</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section id="map-section" class="map-section">
+    <aside class="controls" aria-label="篩選與圖層">
+      <div class="control-block">
+        <h2>資源類型</h2>
+        <label class="filter-row"><input type="checkbox" data-category="culture" checked> <span class="dot dot-culture"></span> 文化場館與文化資產</label>
+        <label class="filter-row"><input type="checkbox" data-category="library" checked> <span class="dot dot-library"></span> 公共圖書館</label>
+        <label class="filter-row"><input type="checkbox" data-category="digital" checked> <span class="dot dot-digital"></span> 數位機會中心</label>
+        <label class="filter-row"><input type="checkbox" data-category="youth" checked> <span class="dot dot-youth"></span> 青年／志工據點與平台</label>
+        <label class="filter-row"><input type="checkbox" data-category="education" checked> <span class="dot dot-education"></span> 教育資源指標點</label>
+      </div>
+      <div class="control-block">
+        <h2>鄉鎮市</h2>
+        <select id="township-select">
+          <option value="">全部鄉鎮市</option>
+        </select>
+      </div>
+      <div class="control-block">
+        <h2>搜尋</h2>
+        <input type="search" id="search-box" placeholder="輸入資源名稱關鍵字">
+      </div>
+      <div class="control-block count-block">
+        <span id="result-count">— 筆資源</span>
+        <span id="stale-count" class="stale-count"></span>
+      </div>
+      <div class="control-block">
+        <ul id="resource-list" class="resource-list"></ul>
+      </div>
+    </aside>
+    <div id="map" role="application" aria-label="宜蘭資源地圖"></div>
+  </section>
+
+  <section id="compare" class="compare-section">
+    <h2>鄉鎮比較</h2>
+    <p class="section-note">資源數量與人口為公開資料現況，非服務品質或需求指標；請一併參考「方法與限制」。</p>
+    <div class="table-wrap">
+      <table id="compare-table">
+        <thead>
+          <tr>
+            <th>鄉鎮市</th>
+            <th>資源總數</th>
+            <th>人口數</th>
+            <th>每萬人資源數</th>
+            <th>涵蓋類型數</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="about" class="about-section">
+    <h2>方法與限制</h2>
+    <div class="about-grid">
+      <div>
+        <h3>資料來源</h3>
+        <ul id="source-list"></ul>
+      </div>
+      <div>
+        <h3>資料處理方式</h3>
+        <ol>
+          <li>從各機關公開網頁或開放資料 API 逐筆查證名稱、地址、座標與最後更新時間。</li>
+          <li>統一欄位格式（鄉鎮市名稱、分類代碼），移除重複或已停止服務之據點。</li>
+          <li>無官方座標者標記為「待地理編碼」，以地址概略定位，不視為精確座標。</li>
+          <li>人口與面積數據取自官方統計資料，用於計算「每萬人資源數」之背景指標。</li>
+          <li>有穩定開放 API 的類別（目前為文化部博物館資料）由排程程式每週自動重新查詢並提出更新；沒有 API、需人工查證的類別（圖書館地址、數位機會中心營運狀態、志工平台等）無法自動更新，改以「查核天數」提醒使用者資料可能過期。</li>
+        </ol>
+        <p class="section-note">每筆資料超過 30 天未查核會標示「待複查」，超過 90 天標示「資料可能已過期」；這個天數是查核新鮮度的提醒門檻，不代表資料在門檻內就保證正確。</p>
+      </div>
+      <div>
+        <h3>這份資料不能代表什麼</h3>
+        <p>本平台呈現的是「目前可查證之公開資料」，不代表各鄉鎮的完整資源供給、服務品質或實際需求。資源數量少，可能反映當地確實資源不足，也可能只是尚未開放或尚未數位化建檔。使用者不應以此直接推論「政府忽略某鄉鎮」，而應作為進一步實地查證與資源盤點的起點。</p>
+        <p>「每萬人資源數」在人口極少的鄉鎮（例如大同鄉、南澳鄉不到7千人）容易被少數幾筆資料（尤其是教育資源指標點）撐高，數字偏高不代表資源真的充裕，解讀時請同時參考「資源總數」與「涵蓋類型數」。</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>資料最後彙整日期：<span id="last-updated"></span>。若發現資料錯誤或有可補充的公開資源，歡迎透過 GitHub Issue 回報。</p>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="js/app.js"></script>
+</body>
+</html>

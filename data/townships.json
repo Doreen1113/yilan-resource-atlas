@@ -1,0 +1,14 @@
+[
+  { "id": "yilan-city", "name": "宜蘭市", "population": 94085, "area_km2": 29.408, "data_year": "2026-07", "source_url": "https://zh.wikipedia.org/zh-tw/%E5%AE%9C%E8%98%AD%E5%B8%82" },
+  { "id": "luodong", "name": "羅東鎮", "population": 68375, "area_km2": 11.3448, "data_year": "2026-07", "source_url": "https://zh.wikipedia.org/zh-tw/%E7%BE%85%E6%9D%B1%E9%8E%AE_(%E5%8F%B0%E7%81%A3)" },
+  { "id": "suao", "name": "蘇澳鎮", "population": 36273, "area_km2": 89.0196, "data_year": "2026-07", "source_url": "https://zh.wikipedia.org/zh-tw/%E8%98%87%E6%BE%B3%E9%8E%AE" },
+  { "id": "toucheng", "name": "頭城鎮", "population": 27982, "area_km2": 100.893, "data_year": "2026-07", "source_url": "https://zh.wikipedia.org/zh-tw/%E9%A0%AD%E5%9F%8E%E9%8E%AE" },
+  { "id": "jiaoxi", "name": "礁溪鄉", "population": 36493, "area_km2": 101.4278, "data_year": "2026-07", "source_url": "https://zh.wikipedia.org/zh-tw/%E7%A4%81%E6%BA%AA%E9%84%89" },
+  { "id": "zhuangwei", "name": "壯圍鄉", "population": 24529, "area_km2": 38.4769, "data_year": "2026-07", "source_url": "https://zh.wikipedia.org/zh-tw/%E5%A3%AF%E5%9C%8D%E9%84%89" },
+  { "id": "yuanshan", "name": "員山鄉", "population": 32274, "area_km2": 111.9106, "data_year": "2026-07", "source_url": "https://zh.wikipedia.org/zh-tw/%E5%93%A1%E5%B1%B1%E9%84%89" },
+  { "id": "dongshan", "name": "冬山鄉", "population": 52819, "area_km2": 79.8573, "data_year": "2026-07", "source_url": "https://zh.wikipedia.org/zh-tw/%E5%86%AC%E5%B1%B1%E9%84%89" },
+  { "id": "wujie", "name": "五結鄉", "population": 41709, "area_km2": 38.8671, "data_year": "2026-07", "source_url": "https://zh.wikipedia.org/zh-tw/%E4%BA%94%E7%B5%90%E9%84%89" },
+  { "id": "sanxing", "name": "三星鄉", "population": 21494, "area_km2": 144.2238, "data_year": "2026-07", "source_url": "https://zh.wikipedia.org/zh-tw/%E4%B8%89%E6%98%9F%E9%84%89_(%E5%8F%B0%E7%81%A3)" },
+  { "id": "datong", "name": "大同鄉", "population": 6047, "area_km2": 657.5442, "data_year": "2026-07", "source_url": "https://zh.wikipedia.org/zh-tw/%E5%A4%A7%E5%90%8C%E9%84%89_(%E5%8F%B0%E7%81%A3)" },
+  { "id": "nanao", "name": "南澳鄉", "population": 6237, "area_km2": 740.652, "data_year": "2026-07", "source_url": "https://zh.wikipedia.org/zh-tw/%E5%8D%97%E6%BE%B3%E9%84%89" }
+]

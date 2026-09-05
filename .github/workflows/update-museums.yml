@@ -1,0 +1,48 @@
+name: Update museum data
+
+on:
+  schedule:
+    - cron: "0 18 * * 0"  # every Sunday 18:00 UTC (Monday 02:00 Taiwan time)
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run museum data refresh
+        run: python scripts/update_museums.py
+
+      - name: Check for changes
+        id: diff
+        run: |
+          if git diff --quiet -- data/resources.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Open pull request
+        if: steps.diff.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "data: weekly museum dataset refresh"
+          title: "Weekly museum dataset refresh"
+          body: |
+            Automated refresh of Yilan County museum entries from the
+            Ministry of Culture open-data API (data/resources.json).
+
+            Review before merging: check any newly added entries have a
+            `township` value filled in (the API does not provide one in a
+            directly usable form), and spot-check coordinates.
+          branch: auto/museum-data-refresh
+          delete-branch: true
