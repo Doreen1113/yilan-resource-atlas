@@ -12,6 +12,7 @@ Exits with status 1 if the fetch fails, so a CI job can distinguish
 """
 import json
 import sys
+import time
 import urllib.request
 from datetime import date, timezone
 from pathlib import Path
@@ -21,12 +22,30 @@ TARGET_CITY = "宜蘭縣"
 ROOT = Path(__file__).resolve().parent.parent
 RESOURCES_PATH = ROOT / "data" / "resources.json"
 
+REQUEST_HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+    ),
+    "Accept": "application/json, text/plain, */*",
+    "Accept-Language": "zh-TW,zh;q=0.9,en;q=0.8",
+    "Referer": "https://cloud.culture.tw/",
+}
 
-def fetch_museums():
-    req = urllib.request.Request(MUSEUM_API_URL, headers={"User-Agent": "yilan-resource-atlas-bot/1.0"})
-    with urllib.request.urlopen(req, timeout=30) as resp:
-        raw = resp.read().decode("utf-8-sig")
-    return json.loads(raw)
+
+def fetch_museums(attempts=3, timeout=60):
+    last_err = None
+    for i in range(attempts):
+        try:
+            req = urllib.request.Request(MUSEUM_API_URL, headers=REQUEST_HEADERS)
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                raw = resp.read().decode("utf-8-sig")
+            return json.loads(raw)
+        except Exception as exc:  # noqa: BLE001
+            last_err = exc
+            if i < attempts - 1:
+                time.sleep(5 * (i + 1))
+    raise last_err
 
 
 def to_resource(entry, today):
