@@ -175,6 +175,39 @@ a { color: var(--accent); }
   width: 100%;
 }
 
+/* 底圖降低飽和度，讓資料點在地圖上更明顯 */
+#map .leaflet-tile-pane { filter: saturate(0.35) brightness(1.06) contrast(0.92); }
+
+.mk-wrap { background: none; border: none; }
+.mk {
+  display: block;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2.5px solid #fff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35), 0 2px 5px rgba(0, 0, 0, 0.4);
+  transition: transform 0.15s ease;
+}
+.mk-wrap:hover .mk { transform: scale(1.25); }
+.mk-selected .mk { transform: scale(1.45); }
+.mk-selected::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 18px;
+  height: 18px;
+  margin: -9px 0 0 -9px;
+  border-radius: 50%;
+  border: 3px solid #111827;
+  pointer-events: none;
+  animation: mk-pulse 1.4s ease-out infinite;
+}
+@keyframes mk-pulse {
+  from { transform: scale(1); opacity: 0.9; }
+  to { transform: scale(3.2); opacity: 0; }
+}
+
 .leaflet-popup-content { font-size: 0.85rem; line-height: 1.5; }
 .leaflet-popup-content .popup-source { font-size: 0.75rem; color: var(--ink-soft); }
 

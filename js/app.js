@@ -52,11 +52,37 @@ const markerLayer = L.layerGroup().addTo(map);
 function makeIcon(category) {
   const color = CATEGORY_COLOR[category] || "#555";
   return L.divIcon({
-    className: "",
-    html: `<span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:${color};border:1px solid rgba(0,0,0,0.35);"></span>`,
-    iconSize: [12, 12],
-    iconAnchor: [6, 6]
+    className: "mk-wrap",
+    html: `<span class="mk" style="background:${color}"></span>`,
+    iconSize: [18, 18],
+    iconAnchor: [9, 9],
+    popupAnchor: [0, -10]
   });
+}
+
+let selectedMarker = null;
+
+function highlightMarker(marker) {
+  if (selectedMarker && selectedMarker !== marker) {
+    selectedMarker.getElement()?.classList.remove("mk-selected");
+    selectedMarker.setZIndexOffset(0);
+  }
+  marker.getElement()?.classList.add("mk-selected");
+  marker.setZIndexOffset(1000);
+  selectedMarker = marker;
+}
+
+function focusResource(r) {
+  const marker = state.markers.find(mk => mk.resourceId === r.id);
+  if (!marker) return;
+  const show = () => { marker.openPopup(); highlightMarker(marker); };
+  const target = L.latLng(r.lat, r.lng);
+  if (map.getZoom() === 15 && map.getCenter().distanceTo(target) < 5) {
+    show();
+  } else {
+    map.once("moveend", show);
+    map.flyTo(target, 15, { duration: 0.6 });
+  }
 }
 
 function passesFilter(r) {
@@ -68,11 +94,16 @@ function passesFilter(r) {
 
 function renderMarkers() {
   markerLayer.clearLayers();
+  state.markers = [];
+  selectedMarker = null;
   const visible = state.resources.filter(passesFilter);
 
   visible.forEach(r => {
     if (r.lat == null || r.lng == null) return;
     const marker = L.marker([r.lat, r.lng], { icon: makeIcon(r.category) });
+    marker.resourceId = r.id;
+    marker.on("click", () => highlightMarker(marker));
+    state.markers.push(marker);
     const geocodeNote = r.geocode_status === "needs_geocoding"
       ? '<p class="popup-source">座標為概略地理編碼，非精確位置。</p>'
       : "";
@@ -111,10 +142,7 @@ function renderList(visible) {
         : "";
       li.innerHTML = `<span class="res-name">${escapeHtml(r.name)} ${staleMark}</span><span class="res-meta">${escapeHtml(r.township)} ・ ${escapeHtml(CATEGORY_LABEL[r.category] || r.category)}</span>`;
       li.addEventListener("click", () => {
-        if (r.lat != null && r.lng != null) {
-          map.setView([r.lat, r.lng], 14);
-          const m = state.markers.find(mk => mk.resourceId === r.id);
-        }
+        if (r.lat != null && r.lng != null) focusResource(r);
       });
       list.appendChild(li);
     });
