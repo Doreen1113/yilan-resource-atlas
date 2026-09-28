@@ -215,6 +215,9 @@ async function init() {
   renderCompareTable();
   renderSourceList();
 
+  const points = resources.filter(r => r.lat != null && r.lng != null).map(r => [r.lat, r.lng]);
+  if (points.length) map.fitBounds(points, { padding: [30, 30], maxZoom: 12 });
+
   document.getElementById("last-updated").textContent =
     resources.reduce((latest, r) => (r.last_verified > latest ? r.last_verified : latest), "0000-00-00");
 }
